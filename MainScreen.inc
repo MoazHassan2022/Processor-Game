@@ -18,7 +18,7 @@ Get_Info proc near
     mov al,01h ; change page(put its index in al (0..7))
     call changePage
     mov bh,0   ; getNotif requires setting the page number
-    mov yx, 1600h
+    mov yx, 1500h
     call Draw_H_Line ;//middle line ; get the notification bar ready in first page
     
     
@@ -37,7 +37,7 @@ Get_Info proc near
     mov al,00h ; change page(put its index in al (0..7))
     call changePage    
     mov bh,1   ; witeNotif calls setCursor so set the page
-    mov yx, 1600h
+    mov yx, 1500h
     call Draw_H_Line ; get the notification bar ready in second page
 
     popf
@@ -87,14 +87,14 @@ pushf
     int 16h
     mov bh,0
     call clearScreen
-    call clearNotifcationArea 
+    call clearNotifcationArea
+    
     cmp ah, 3ch     ; check if F2 key is pressed
     je Chating 
     cmp ah, 3dh     ; check if F3 key is pressed
     je Game 
     cmp ah, 01h     ; check if ESC key is pressed
     je end1
-
 
 popf
 popa

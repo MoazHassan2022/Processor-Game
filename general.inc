@@ -2,9 +2,11 @@
 setCursor proc near
     pusha
     pushf
+    
     mov ah, 2
     mov dx,yx
     int 10h
+
     popf
     popa
     ret  
@@ -16,14 +18,18 @@ endp
 printMsgAtyx proc near
     pusha
     pushf
+
     call setCursor 
     mov ah, 9
+    mov bh,2h
     mov dx, msg
     int 21h
+    
     popf
     popa
     ret
 endp
+
 ;//////////////////////////////
 ;print msg in var( msg ) in current curser postion 
 printMsg proc near
@@ -157,7 +163,8 @@ Write_Not_First_Line proc near
     pusha
     pushf   
     
-    mov yx, 1700h 
+    call clearNotFirst
+    mov yx, 1600h 
     call setCursor  
     call printMsg
     
@@ -165,13 +172,15 @@ Write_Not_First_Line proc near
     popa
     ret
 endp
+
 ;///////////////////////////////////
 ; write in seconline in notification area with sg in var( msg )
 Write_Not_Second_Line proc near
     pusha
     pushf   
     
-    mov yx, 1800h 
+    call clearNotSecond
+    mov yx, 1700h 
     call setCursor  
     call printMsg
     
@@ -210,4 +219,4 @@ clearNotSecond proc near
     ret
 endp
 
-
+    

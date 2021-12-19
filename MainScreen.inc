@@ -10,10 +10,11 @@ Get_Info proc near
     ;Request continue 'print message' 
     mov msg, offset enter
     call printMsg
+    checkEnter:	
     mov ah, 0
     int 16h
     cmp ah, 1ch ; check if enter is pressed
-    jne end1
+    jne checkEnter
     call clearScreen
     mov al,01h ; change page(put its index in al (0..7))
     call changePage
@@ -29,10 +30,11 @@ Get_Info proc near
     ;Request continue 'print message' 
     mov msg, offset enter
     call printMsg
+    checkEnter2:
     mov ah, 0
     int 16h
     cmp ah, 1ch ; check if enter is pressed
-    jne end1        
+    jne checkEnter2
     call clearScreen
     mov al,00h ; change page(put its index in al (0..7))
     call changePage    

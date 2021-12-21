@@ -10,15 +10,16 @@ Get_Info proc near
     ;Request continue 'print message' 
     mov msg, offset enter
     call printMsg
+    checkEnter:
     mov ah, 0
     int 16h
     cmp ah, 1ch ; check if enter is pressed
-    jne end1
+    jne checkEnter
     call clearScreen
     mov al,01h ; change page(put its index in al (0..7))
     call changePage
     mov bh,0   ; getNotif requires setting the page number
-    mov yx, 1600h
+    mov yx, 1500h
     call Draw_H_Line ;//middle line ; get the notification bar ready in first page
     
     
@@ -37,7 +38,7 @@ Get_Info proc near
     mov al,00h ; change page(put its index in al (0..7))
     call changePage    
     mov bh,1   ; witeNotif calls setCursor so set the page
-    mov yx, 1600h
+    mov yx, 1500h
     call Draw_H_Line ; get the notification bar ready in second page
 
     popf
@@ -54,6 +55,12 @@ pusha
 pushf
 
 ;//////////////MAIN SCREEN///////////////
+    ;welcoming the user
+    mov msg, offset welcomeUser
+    call Write_Not_First_Line
+    mov msg, offset firstUsername+2
+    call Concatinate_Not
+    
     ;initializing cursor position
     mov bh,0 
     mov yx, 020Ah
@@ -78,23 +85,24 @@ pushf
     
     ;'print message'
     mov msg, offset endProgram
-    call printMsg 
+    call printMsg
+     
     mov bh,0 
     mov msg, offset Choose_the_mode
-    call Write_Not_First_Line 
+    call Write_Not_Second_Line
     
     mov ah, 0       ; check what key is pressed
     int 16h
     mov bh,0
     call clearScreen
-    call clearNotifcationArea 
+    call clearNotifcationArea
+    
     cmp ah, 3ch     ; check if F2 key is pressed
     je Chating 
     cmp ah, 3dh     ; check if F3 key is pressed
     je Game 
     cmp ah, 01h     ; check if ESC key is pressed
     je end1
-
 
 popf
 popa
@@ -134,6 +142,7 @@ firstUser proc near
     mov msg, offset scoreRequest
     call printMsg
     
+    tryAgain:
     ;updating cursor position
     mov yx, 0B0Ah
     call setCursor
@@ -141,7 +150,9 @@ firstUser proc near
     ;getting score from user 'keyboard input'
     mov input, offset firstInputScore
     call getInput    
-    Num_Input firstInputScore, firstScore 
+    Num_Input firstInputScore, firstScore, parse_int
+    cmp parse_int, 0
+    je tryAgain 
     
     ;updating cursor position
     mov yx, 0E0Ah
@@ -187,6 +198,7 @@ secondUser proc near
     mov msg, offset scoreRequest
     call printMsg
     
+    tryAgain2:
     ;updating cursor position 
     mov bh,01
     mov yx, 0B0Ah
@@ -195,7 +207,9 @@ secondUser proc near
     ;getting score from user 'keyboard input'
     mov input, offset secondInputScore
     call getInput    
-    Num_Input secondInputScore, secondScore 
+    Num_Input secondInputScore, secondScore, parse_int
+    cmp parse_int, 0
+    je tryAgain2
     
     ;updating cursor position 
     mov bh,01

@@ -2,28 +2,50 @@
 setCursor proc near
     pusha
     pushf
+    
     mov ah, 2
     mov dx,yx
     int 10h
+
     popf
     popa
     ret  
 endp
-
 ;////////////////////////////////////////
+
+;get Cursor position and store it in var( yx )
+getCursor proc near
+    pusha
+    pushf
+
+    mov ah, 3h
+    mov bh, 0h
+    int 10h
+    mov yx, dx
+
+    popf
+    popa
+    ret
+endp
+;////////////////////////////////////////
+
 ; write the mesagee in var ( msg ) in postion in var ( yx )
 
 printMsgAtyx proc near
     pusha
     pushf
+
     call setCursor 
     mov ah, 9
+    mov bh,2h
     mov dx, msg
     int 21h
+    
     popf
     popa
     ret
 endp
+
 ;//////////////////////////////
 ;print msg in var( msg ) in current curser postion 
 printMsg proc near
@@ -41,9 +63,14 @@ endp
 getInput proc near
     pusha
     pushf
+    anotherOne:
     mov ah, 0Ah
     mov dx, input
     int 21h
+    mov di, input
+    mov ax, [di] + 2
+    cmp ax, 240Dh
+    je anotherOne
     popf
     popa
     ret
@@ -104,8 +131,8 @@ clearNotifcationArea proc near
 endp
 ;//////////////////////
 ; recive number and convert it from user
-Num_Input macro inputScore, score ; macro to convert score to digits
-    LOCAL one,two,three,end
+Num_Input macro inputScore, score, parse_int ; macro to convert score to digits
+    LOCAL one,two,three,end, success, notInt
     pusha
     pushf    
     mov ah,0
@@ -119,32 +146,64 @@ Num_Input macro inputScore, score ; macro to convert score to digits
     jz three
     one:
     sub al, 30h
+    cmp al, 0   ; parse_int 
+    jb notInt   ; parse_int 
+    cmp al, 9   ; parse_int 
+    ja notInt   ; parse_int
     mov dx, ax  
-    jmp end
+    jmp success
     two:
     sub al, 30h
+    cmp al, 0   ; parse_int 
+    jb notInt   ; parse_int 
+    cmp al, 9   ; parse_int 
+    ja notInt   ; parse_int
     mov cl, 10
     mul cl      ; ax = al * 10
     mov dx, ax    
     mov al,inputScore + 3  ; get second char
     sub al, 30h
+    cmp al, 0   ; parse_int 
+    jb notInt   ; parse_int 
+    cmp al, 9   ; parse_int 
+    ja notInt   ; parse_int
     add dx,ax 
-    jmp end  
+    jmp success  
     three:
     sub al, 30h
+    cmp al, 0   ; parse_int 
+    jb notInt   ; parse_int 
+    cmp al, 9   ; parse_int 
+    ja notInt   ; parse_int
     mov cl, 100
     mul cl      ; ax = al * 10
     mov dx, ax    
     mov al,inputScore + 3  ; get second char
     sub al, 30h
+    cmp al, 0   ; parse_int 
+    jb notInt   ; parse_int 
+    cmp al, 9   ; parse_int 
+    ja notInt   ; parse_int
     mov cl, 10
     mul cl 
     add dx,ax
     mov al,inputScore + 4   ; get 3rd char
     sub al, 30h
+    cmp al, 0   ; parse_int 
+    jb notInt   ; parse_int 
+    cmp al, 9   ; parse_int 
+    ja notInt   ; parse_int
     mov ah,0
     add dx,ax
     
+    success:
+    mov score, dx
+    mov parse_int, 1
+    jmp end
+
+    notInt:
+    mov parse_int, 0
+
     end:
     mov score, dx
     popf
@@ -157,29 +216,41 @@ Write_Not_First_Line proc near
     pusha
     pushf   
     
-    mov yx, 1700h 
+    call clearNotFirst
+    mov yx, 1600h 
     call setCursor  
     call printMsg
+
+    call getCursor
+    mov ax, yx
+    mov notifyx, ax     ;notifyx = yx
     
     popf
     popa
     ret
 endp
 ;///////////////////////////////////
+
 ; write in seconline in notification area with sg in var( msg )
 Write_Not_Second_Line proc near
     pusha
     pushf   
     
-    mov yx, 1800h 
+    call clearNotSecond
+    mov yx, 1700h 
     call setCursor  
     call printMsg
+
+    call getCursor
+    mov ax, yx
+    mov notifyx, ax     ;notifyx = yx
     
     popf
     popa
     ret
 endp
 ;///////////////////////////////
+
 ;Clear first line in Notifiction area
 clearNotFirst proc near
     pusha
@@ -193,9 +264,8 @@ clearNotFirst proc near
     popa
     ret
 endp
-
-
 ;///////////////////////////////
+
 ;Clear Second line in Notifiction area
 clearNotSecond proc near
     pusha
@@ -209,5 +279,24 @@ clearNotSecond proc near
     popa
     ret
 endp
+;//////////////////////////////
 
+; keep writing in the notifications area without clearing
+Concatinate_Not proc near
+    pusha
+    pushf
 
+    mov ax, notifyx
+    mov yx, ax
+    call setCursor
+    call printMsg
+
+    call getCursor
+    mov ax, yx
+    mov notifyx, ax     ;notifyx = yx
+
+    popf
+    popa
+    ret
+endp
+;/////////////////////////////////

@@ -41,6 +41,13 @@ InvalidMsgForbidden db "Enter a valid char $"
 ForbiddenChar1 db ?
 count db 0  
 count2 db 0  
+;vars to draw the page
+verticalend dw ?
+horizotalpostion dw ?  
+colnum dw ?   
+endrow dw ? 
+startrow dw 0 
+verticalstart dw 0
 ; end of cahtting vars 
 StringMsg db ?
 
@@ -71,11 +78,15 @@ Main proc far
         
                 
     Game:
-      DecideLevel   
+      ;DecideLevel 
+     
+      DrawGame   
            
         
-    end1:
-                      
+    end1: 
+    mov al, 0 
+    mov ah,03
+    int 10h                 
     mov ah,4ch
     int 21h    
 endp
@@ -83,7 +94,7 @@ endp
 include Chatting.inc      
 include general.inc
 include MainScreen.inc
-                              
+include GameMacros.inc                              
                               
 end main
             

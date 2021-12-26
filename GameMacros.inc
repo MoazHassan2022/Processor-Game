@@ -143,21 +143,22 @@ call drawregshor
 
 
 ;///start write the words
-mov yx,1010h
-call setCursor
+mov yx,0003
+;call fillmemocells
 
-mov ah, 0eh           ;0eh = 14
-mov al, 'A'
-mov bh,1           ;Page number zero
-mov bl, 0ch           ;Color is red
-int 10h
+mov yx,0036
+;call fillmemocells
+
+mov user, 1
+mov memolocation, 3
+;call fillmemo
+
+mov user, 2
+mov memolocation, 3
+;call fillmemo
 
 
-
-mov bl,0fh
-mov cx,1
-mov al,'x'
-int 10h
+call fillreg
 
 
 
@@ -169,8 +170,113 @@ int 10h
 
 endm DrawGame
 
+;/////////////////////////////////////////////////////////////////
+;Memory and Registers
+Fillmemo proc near
+pusha 
+pushf
+cmp user,1 
+jnz default
+mov yx,0000
+jmp startfill
+default: mov yx,0038
+startfill:
+mov cl,memolocation
+mov dx,yx
+add dh,cl
+mov yx,dx
+mov countmemo, 2
+mov si, 0
+mov bh, 1
+li22:
+call setCursor
+            mov ah,9
+            mov al, memolocationvalue[si]
+            mov bh,1
+            mov cx,1
+            mov bl,0Fh 
+            int 10h
+			inc yx
+			inc si
+	dec countmemo
+cmp countmemo,0
+jnz li22
 
 
+popf 
+popa
+ret
+endp 
+
+
+fillmemocells proc near 
+pusha
+pushf
+mov memosize, 16
+mov bh,1
+mov si,0
+li:mov countmemo, 2
+
+li2:call setCursor
+            mov ah,9
+            mov al, memo[si]
+            mov bh,1
+            mov cx,1
+            mov bl,0Fh 
+            int 10h
+			inc yx
+			inc si
+	dec countmemo
+jnz li2
+mov cx,yx
+inc ch
+dec cl
+dec cl
+mov yx,cx
+dec memosize
+cmp memosize , 0
+jnz li 
+popf
+popa
+ret
+endp
+     
+fillreg proc near
+pusha
+pushf
+    mov bh, 1  
+    mov dh, 7
+    mov dl, 10
+    mov yx, dx
+    label1:
+    mov countmemo, 2
+    label2:
+    mov regSize, 4
+    label3:
+    call setCursor
+            mov ah,9            
+            mov al, '0'
+            mov bh,1
+            mov cx,1
+            mov bl,0Fh 
+            int 10h
+            inc yx
+    dec regSize
+    jnz label3
+    
+    mov dl, 15
+    mov yx, dx
+    dec countmemo
+    jnz label2
+    mov dl, 10
+    add dh, 3
+    mov yx, dx
+    dec registerscount
+    jnz label1
+popf
+popa
+ret
+endp
 
 
 
@@ -251,3 +357,6 @@ popf
 popa
 ret
 endp
+
+
+

@@ -48,6 +48,17 @@ colnum dw ?
 endrow dw ? 
 startrow dw 0 
 verticalstart dw 0
+;vars of memory cells
+Memo db "00010203040506070809101112131415"  
+memosize db 16       
+countmemo db 2
+memolocation db ?
+memolocationvalue db '03'
+user db 1
+;vars of registers
+regInitialvalue db '0000','$'
+regSize db 4
+registerscount db 4
 ; end of cahtting vars 
 StringMsg db ?
 

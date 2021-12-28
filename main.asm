@@ -11,13 +11,15 @@ enter db 'Press Enter key to continue', '$'
 startChating db 'To start chating press F2','$'
 startGame db 'To start the game press F3','$'
 endProgram db 'To end the program press ESC','$'
-firstUsername db 15,?,15 dup('$') 
+firstUsername db 15,?,"Mahmoud:",15 dup('$')   
+Firstcountname db 9
 firstInputScore db 4,?,4 dup('$')
 firstScore dw ?
-secondUsername db 15,?,15 dup('$') 
+secondUsername db 15,?,"Waer:",15 dup('$')  
+secondcountname db 6
 secondInputScore db 4,?,4 dup('$')
-secondScore dw ?  
-Choose_the_mode db 'choose the mode','$'
+secondScore dw 4  
+Choose_the_mode db 'choose the mode','$' 
 
 ;end of main screen vars
 
@@ -49,7 +51,9 @@ endrow dw ?
 startrow dw 0 
 verticalstart dw 0
 ;vars of memory cells
-Memo db "00010203040506070809101112131415"  
+Memo1 db "00010203040506070809101112131415"
+Memo2 db "00000000000000000000000000000000"  
+Memotemp db ?
 memosize db 16       
 countmemo db 2
 memolocation db ?
@@ -58,7 +62,17 @@ user db 1
 ;vars of registers
 regInitialvalue db '0000','$'
 regSize db 4
-registerscount db 4
+registerscount db 4 
+RegsPosition db ? 
+regnum db ?  
+tempregname db "AXSICXDIBXSPDXBP" 
+regvalues db "1101"
+regposition dw ?   
+isexist db ?   
+shift dw 0 
+;inline chat
+inlineFirstOneTalk dw ?
+arrive_max_message db "you are exceeded the max leght of the massage $"
 ; end of cahtting vars 
 StringMsg db ?
 
@@ -91,7 +105,9 @@ Main proc far
     Game:
       ;DecideLevel 
      
-      DrawGame   
+      DrawGame     
+  
+
            
         
     end1: 

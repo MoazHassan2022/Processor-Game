@@ -847,6 +847,7 @@ macro DecideLevel
 	 jmp Again
 
 	 Valid:
+	 mov Levelnum,al
 	 ForbiddenChar
 	 Decided:
 endm DecideLevel

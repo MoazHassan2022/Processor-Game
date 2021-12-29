@@ -40,7 +40,9 @@ InvalidMsg db "The Number is invalid enter only 1 or 2...$"
 LevelMsg   db "Enter the Number of the level 1 or 2 ...",10,13," and if You want to return to the main screen press Enter  ...$"    
 Forbidden db 10,13,"Enter the forbidden char $" 
 InvalidMsgForbidden db "Enter a valid char $"  
-ForbiddenChar1 db ?
+Levelnum db "2"
+ForbiddenChar1 db "A" 
+ForbiddenChar2 db "B"
 count db 0  
 count2 db 0  
 ;vars to draw the page
@@ -58,7 +60,8 @@ memosize db 16
 countmemo db 2
 memolocation db ?
 memolocationvalue db '03'
-user db 1
+user db 1  
+scoreintialization db "Score"
 ;vars of registers
 regInitialvalue db '0000','$'
 regSize db 4
@@ -67,9 +70,8 @@ RegsPosition db ?
 regnum db ?  
 tempregname db "AXSICXDIBXSPDXBP" 
 regvalues db "1101"
-regposition dw ?   
-isexist db ?   
-shift dw 0 
+regposition dw ?
+shift db ?   
 ;inline chat
 inlineFirstOneTalk dw ?
 arrive_max_message db "you are exceeded the max leght of the massage $"

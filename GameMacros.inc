@@ -5,32 +5,43 @@ int 10h
 
 mov verticalend,133
 mov horizotalpostion,18
-call drawvertical
+;call drawvertical
 
 
 mov verticalend,155
 mov horizotalpostion,40
-call drawvertical
+;call drawvertical
 
 
 mov verticalend,174
 mov horizotalpostion,160
-call drawvertical
+;call drawvertical
 
 
 mov verticalend,133
 mov horizotalpostion,300
-call drawvertical
+;call drawvertical
 
 
 mov verticalend,155
 mov horizotalpostion,279
-call drawvertical
+;call drawvertical
 
 mov endrow,320
 mov colnum,133
 call drawhorziontal
+cmp Levelnum,31h
+jnz Gameleveltwo
+mov verticalstart,145
+mov verticalend,155
+mov horizotalpostion,10
+call drawvertical
 
+mov verticalstart,145
+mov horizotalpostion,310
+call drawvertical
+
+Gameleveltwo:
 mov colnum,155
 call drawhorziontal
 
@@ -42,7 +53,7 @@ call drawhorziontal
 mov endrow,36
 mov colnum,9
 drawcells1:
-	;call drawhorziontal
+	;;call drawhorziontal
 	add colnum,9
 cmp colnum,144
 jnz drawcells1
@@ -52,7 +63,7 @@ mov colnum,9
 mov endrow,320
 mov startrow,284
 drawcells2:
-	;call drawhorziontal
+	;;call drawhorziontal
 	add colnum,9
 cmp colnum,144
 jnz drawcells2
@@ -60,27 +71,27 @@ jnz drawcells2
 ;/////////////////////////////////////////////////
 ;draw the registers vertical lines
 mov horizotalpostion,50
-call drawregsver
+;;call drawregsver
 
 ;draw the registers horziontal lines
 ;the below line
 mov colnum,24
 mov startrow,50
 mov endrow,90
-call drawregshor
+;call drawregshor
 
 ;the above line
 mov colnum,14
 mov startrow,50
 mov endrow,90
-call drawregshor
+;call drawregshor
 
 
 
 ;the second four regs
 ;draw the registers vertical lines
 mov horizotalpostion,100
-call drawregsver
+;call drawregsver
 
 
 
@@ -89,13 +100,13 @@ call drawregsver
 mov colnum,24
 mov startrow,100
 mov endrow,140
-call drawregshor
+;call drawregshor
 
 ;the above line
 mov colnum,14
 mov startrow,100
 mov endrow,140
-call drawregshor
+;call drawregshor
 
 
 ;/////////////draw the regs to the second user
@@ -103,27 +114,27 @@ call drawregshor
 
 ;draw the registers vertical lines
 mov horizotalpostion,185
-call drawregsver
+;;call drawregsver
 
 ;draw the registers horziontal lines
 ;the below line
 mov colnum,24
 mov startrow,185
 mov endrow,225
-call drawregshor
+;;call drawregshor
 
 ;the above line
 mov colnum,14
 mov startrow,185
 mov endrow,225
-call drawregshor
+;;call drawregshor
 
 
 
 ;the second four regs
 ;draw the registers vertical lines
 mov horizotalpostion,235
-call drawregsver
+;;call drawregsver
 
 
 
@@ -132,129 +143,133 @@ call drawregsver
 mov colnum,24
 mov startrow,235
 mov endrow,275
-call drawregshor
+;;call drawregshor
 
 ;the above line
 mov colnum,14
 mov startrow,235
 mov endrow,275
-call drawregshor
+;;call drawregshor
 
 
 
 ;///start write the words
 mov yx,0003
-call fillmemocells1
+;call fillmemocells1
 
 mov yx,0035
-call fillmemocells1
+;call fillmemocells1
 
 mov yx,0000
-call fillmemocells2
+;call fillmemocells2
 
 
 mov yx,0038
-call fillmemocells2
+;call fillmemocells2
 
 
 mov user, 1
 mov memolocation, 3
-call fillmemo
+;call fillmemo
 
 mov user, 2
 mov memolocation, 3
-call fillmemo
+;call fillmemo
 
 mov RegsPosition,7
-call fillreg
+;call fillreg
 
 mov registerscount,4
 mov RegsPosition,24
-call fillreg
+;call fillreg
 mov yx,0107h
-call fillthenamesoftheregs
+;call fillthenamesoftheregs
 
 mov yx,0118h
-call fillthenamesoftheregs
+;call fillthenamesoftheregs
 
 mov user,1
 mov regnum,0
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 mov regnum,2
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 mov user,2
 mov regnum,0
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 mov regnum,2
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
+;call Regtype
+;call Regvalue
 
 
 
-call  Regtype
-call Regvalue
-call usersnames
-call Inlinechat
-
+;call Regtype
+;call Regvalue
+;call usersnames
+;call Inlinechat
+call showforbiddenchar
+mov yx,1100h
+call scoretext
+mov yx,1123h
+call scoretext
 endm DrawGame
 
 ;/////////////////////////////////////////////////////////////////
@@ -448,7 +463,7 @@ loopregs1:
 	mov verticalstart,14
 	mov verticalend,24
 drawregs1:
-	call drawvertical
+	;call drawvertical
 	add verticalend,24
 	add verticalstart,24
 cmp verticalend,96
@@ -468,7 +483,7 @@ pusha
 pushf
 
 drawregshor1:
-	call drawhorziontal
+	;call drawhorziontal
 	add colnum,24
 cmp colnum,100
 jle drawregshor1
@@ -736,13 +751,13 @@ ret
 endp
 
 
-
+;/i don't need this function
 compareregs proc
  pusha 
  pushf
  mov di,0
  mov si,0
- add si , shift
+ ;add si , shift
  mov cx,2
  labelll:
  ;mov al, regname[di]
@@ -752,7 +767,7 @@ compareregs proc
  inc si
  inc di
 loop labelll
-mov isexist,1
+;mov isexist,1
 notequalchar:
  popf
  popa
@@ -854,6 +869,65 @@ notequalchar:
  popa
  ret
  endp
+
+
+ showforbiddenchar proc 
+ pusha
+ pushf
+ cmp levelnum,31h
+ jnz leveltwo
+ mov ah,0
+ int 16h 
+ mov yx,1200h
+ mov bh,1
+ call setcursor
+ mov ah,9            
+ mov al,ForbiddenChar1
+ mov cx,1
+ mov bl,0Fh 
+ int 10h
+ mov al,ForbiddenChar2
+ mov yx,1227h
+ pusha
+ call setcursor
+ popa
+ int 10h
+ jmp endshow
+ leveltwo:
+ endshow:
+
+ popf
+ popa
+ ret
+ endp
+
+
+ scoretext proc 
+ pusha
+ pushf
+ mov si,0
+ mov regSize,5
+ looptofillscoretext:
+ mov bh,1
+ call setcursor
+ mov ah,9            
+ mov al,scoreintialization[si]
+ mov cx,1
+ mov bl,0Fh 
+ int 10h
+ inc si
+ inc yx
+ dec regsize
+ cmp regsize,0
+ jnz looptofillscoretext
+
+
+
+ popf
+ popa
+ ret
+ endp
+
 ;///////////////////////////////////////////////////////////////////
  Inlinechat proc near
 pusha

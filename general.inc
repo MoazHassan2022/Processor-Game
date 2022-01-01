@@ -1,6 +1,10 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;General;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ; set  the cursor at postion exist in var( yx )
 setCursor proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
     
     mov ah, 2
@@ -8,15 +12,21 @@ setCursor proc near
     int 10h
 
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret  
-endp
+setCursor endp
 
 ;////////////////////////////////////////
 ; write the mesagee in var ( msg ) in postion in var ( yx )
 
 printMsgAtyx proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
 
     call setCursor 
@@ -26,63 +36,98 @@ printMsgAtyx proc near
     int 21h
     
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+printMsgAtyx endp
 
 ;//////////////////////////////
 ;print msg in var( msg ) in current curser postion 
 printMsg proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
     mov ah, 9
     mov dx, msg
     int 21h
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+printMsg endp
 ;//////////////////////////////////
 ; get the input and put it in var( input )
 getInput proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
     mov ah, 0Ah
     mov dx, input
     int 21h
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+getInput endp
 ;/////////////////////////////////
 ;chage between pages with the value in al
 changePage proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
     mov ah,05h
     int 10h
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+changePage endp
 ;//////////////////////////////////
 ; clean the screen except the notification area
 clearScreen proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
-    mov ax, 0600h   ;clear screen
-    mov bh,07
-    mov cx,00
-    mov dx,184fh
-    int 10h
+
+    ;Resetting the DOS screen
+    mov ah,0 
+    mov al,13h
+    int 10h 
+    
+    mov ah,0 
+    mov al,3h
+    int 10h 
+
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+clearScreen endp
 ;///////////////////////////////
 ;Draw horizontal line at var ( yx )
 Draw_H_Line proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf 
     call setCursor 
     mov ah,9
@@ -91,13 +136,19 @@ Draw_H_Line proc near
     mov cx,80
     int 10h
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+Draw_H_Line endp
 ;//////////////////////////////
 ;Clear Notification Area
 clearNotifcationArea proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
     mov ax, 0602h   ;clear after bar
     mov bh,07
@@ -105,14 +156,20 @@ clearNotifcationArea proc near
     mov dx,184fh
     int 10h
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+clearNotifcationArea endp
 ;//////////////////////
 ; recive number and convert it from user
 Num_Input macro inputScore, score ; macro to convert score to digits
     LOCAL one,two,three,end
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf    
     mov ah,0
     mov al,inputScore + 2 ; get first char
@@ -126,7 +183,7 @@ Num_Input macro inputScore, score ; macro to convert score to digits
     one:
     sub al, 30h
     mov dx, ax  
-    jmp end
+    jmp far ptr end
     two:
     sub al, 30h
     mov cl, 10
@@ -135,7 +192,7 @@ Num_Input macro inputScore, score ; macro to convert score to digits
     mov al,inputScore + 3  ; get second char
     sub al, 30h
     add dx,ax 
-    jmp end  
+    jmp far ptr end  
     three:
     sub al, 30h
     mov cl, 100
@@ -154,44 +211,62 @@ Num_Input macro inputScore, score ; macro to convert score to digits
     end:
     mov score, dx
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     
     Endm getScore
 ;///////////////////////////////////
 ; write in first line in notification area with msg in var( msg )
 Write_Not_First_Line proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf   
     
     call clearNotFirst
-    mov yx, 1600h 
-    call setCursor  
-    call printMsg
-    
-    popf
-    popa
-    ret
-endp
-
-;///////////////////////////////////
-; write in seconline in notification area with sg in var( msg )
-Write_Not_Second_Line proc near
-    pusha
-    pushf   
-    
-    call clearNotSecond
     mov yx, 1700h 
     call setCursor  
     call printMsg
     
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+Write_Not_First_Line endp
+
+;///////////////////////////////////
+; write in seconline in notification area with sg in var( msg )
+Write_Not_Second_Line proc near
+    push ax
+push bx
+push cx
+push dx
+    pushf   
+    
+    call clearNotSecond
+    mov yx, 1800h 
+    call setCursor  
+    call printMsg
+    
+    popf
+    pop dx
+pop cx
+pop bx
+pop ax
+    ret
+Write_Not_Second_Line endp
 ;///////////////////////////////
 ;Clear first line in Notifiction area
 clearNotFirst proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
     mov ax, 0602h   ;clear after bar
     mov bh,07
@@ -199,15 +274,21 @@ clearNotFirst proc near
     mov dx,174fh
     int 10h
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+clearNotFirst endp
 
 
 ;///////////////////////////////
 ;Clear Second line in Notifiction area
 clearNotSecond proc near
-    pusha
+    push ax
+push bx
+push cx
+push dx
     pushf
     mov ax, 0602h   ;clear after bar
     mov bh,07
@@ -215,8 +296,11 @@ clearNotSecond proc near
     mov dx,184fh
     int 10h
     popf
-    popa
+    pop dx
+pop cx
+pop bx
+pop ax
     ret
-endp
+clearNotSecond endp                   
 
-    
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

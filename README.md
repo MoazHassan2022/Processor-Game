@@ -31,4 +31,6 @@ Five addressing modes are supported.
 Supported Commands are: 
 [ADD-ADC-SUB-SBB-XOR-AND-OR-NOP-SHR-SHL-SAR-ROR-RCL-RCR-ROL]
 
+It was a project for the college.
+
 

@@ -26,4 +26,9 @@ d. Incorrect addressing mode like “mov ax, [CX]”
 
 The game supports inline chat within the game and a pop up game that shows up suddenlu during the game and it is a moving a ball and an arrow to shot the ball and if it is shot the player gets extra score.
 
+Five addressing modes are supported.
+
+Supported Commands are: 
+[ADD-ADC-SUB-SBB-XOR-AND-OR-NOP-SHR-SHL-SAR-ROR-RCL-RCR-ROL]
+
 

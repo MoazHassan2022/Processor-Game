@@ -1,0 +1,9 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 066BBH 066BCH MAIN_TEXT          CODE
+ 066C0H 06C5EH 0059FH _DATA              DATA
+ 06C60H 06C9FH 00040H STACK              STACK
+
+Program entry point at 0000:60CC
+
